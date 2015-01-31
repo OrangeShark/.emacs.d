@@ -29,6 +29,9 @@
     ;;interation with Clojure REPL
     cider
 
+    ;;scheme
+    geiser
+
     ;;ido
     ido-ubiquitous
     
