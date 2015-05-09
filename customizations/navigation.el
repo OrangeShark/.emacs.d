@@ -13,10 +13,9 @@
 
 ;; interactively do things
 ;; http://www.emacswiki.org/emacs/InteractivelyDoThings
-(require 'ido)
-(ido-mode t)
+(ido-mode 1)
+(ido-everywhere 1)
 
-;; Allows partial matches
 (setq ido-enable-flex-matching t)
 
 (setq ido-use-filename-at-point nil)
@@ -25,6 +24,7 @@
 
 (setq ido-use-virtual-buffers t)
 
+(require 'ido-ubiquitous)
 (ido-ubiquitous-mode 1)
 
 ;; Shows a list of buffers
@@ -34,6 +34,6 @@
 (setq smex-save-file (concat user-emacs-directory ".smex-items"))
 (smex-initialize)
 (global-set-key (kbd "M-x") 'smex)
-
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)
 ;; projectile everywhere!
 (projectile-global-mode)

@@ -2,8 +2,7 @@
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
 			 ("marmalade" . "http://marmalade-repo.org/packages/")
-			 ("melpa" . "http://melpa.milkbox.net/packages/")
-                         ("tromey" . "http://tromey.com/elpa")))
+			 ("melpa" . "http://melpa.milkbox.net/packages/")))
 (package-initialize)
 (setq url-http-attempt-keepalives nil)
 
@@ -28,6 +27,9 @@
 
     ;;interation with Clojure REPL
     cider
+
+    ;; The Superior Lisp Interaction Mode for Emacs
+    slime
 
     ;;scheme
     geiser
@@ -77,6 +79,9 @@
 ;; misc config
 (load "misc.el")
 
+;; git config
+(load "git.el")
+
 ;; For editing elisp
 (load "elisp-editing.el")
 
@@ -86,6 +91,7 @@
 (load "setup-markdown.el")
 (load "setup-javascript.el")
 (load "setup-clojure.el")
+(load "setup-lisp.el")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
