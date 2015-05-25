@@ -4,3 +4,4 @@
 
 ;; Guile scheme
 (setq scheme-program-name "guile")
+(setq geiser-active-implementations '(guile))
