@@ -1,6 +1,6 @@
 ;; Turn off the menu bar
 (menu-bar-mode -1)
-
+(tool-bar-mode -1)
 ;; Line numbering
 (require 'linum)
 (global-linum-mode t)

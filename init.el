@@ -19,22 +19,26 @@
     ;; minor mode for editing S-expression data
     paredit
 
-    ;;key bindings for Clojure
+    ;; key bindings for Clojure
     clojure-mode
 
-    ;;extra syntax highlighting for clojure
+    ;; extra syntax highlighting for clojure
     clojure-mode-extra-font-locking
 
-    ;;interation with Clojure REPL
+    ;; interation with Clojure REPL
     cider
+
+    ;; text completion
+    company
 
     ;; The Superior Lisp Interaction Mode for Emacs
     slime
+    slime-company
 
-    ;;scheme
+    ;; scheme
     geiser
 
-    ;;ido
+    ;; ido
     ido-ubiquitous
     
     ;; Enhances M-x

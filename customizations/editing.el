@@ -46,3 +46,5 @@
 (global-set-key (kbd "C-;") 'toggle-comment-on-line)
 
 (setq electric-indent-mode nil)
+
+(global-company-mode)
