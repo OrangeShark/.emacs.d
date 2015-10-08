@@ -54,7 +54,7 @@
     tagedit
 
     ;; git integration
-    magit
+    ;magit
 
     ;; theme
     moe-theme))
@@ -84,7 +84,7 @@
 (load "misc.el")
 
 ;; git config
-(load "git.el")
+;(load "git.el")
 
 ;; For editing elisp
 (load "elisp-editing.el")
