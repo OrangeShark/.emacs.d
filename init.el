@@ -104,9 +104,6 @@
 (load "setup-lisp.el")
 (load "setup-org.el")
 
-(add-to-list 'load-path "~/.emacs.d/jdee/")
-(require 'jdee)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
