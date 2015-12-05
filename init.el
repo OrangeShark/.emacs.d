@@ -16,6 +16,9 @@
     ;; rust-lang major mode
     rust-mode
 
+    ;; typescript
+    typescript-mode
+
     ;; minor mode for editing S-expression data
     paredit
 
@@ -57,7 +60,10 @@
     ;magit
 
     ;; theme
-    moe-theme))
+    moe-theme
+
+    ;; org-mode
+    org))
 
 ;; Install package if not already installed
 (dolist (p my-packages)
@@ -96,6 +102,10 @@
 (load "setup-javascript.el")
 (load "setup-clojure.el")
 (load "setup-lisp.el")
+(load "setup-org.el")
+
+(add-to-list 'load-path "~/.emacs.d/jdee/")
+(require 'jdee)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
