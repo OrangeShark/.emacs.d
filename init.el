@@ -10,7 +10,10 @@
   (package-refresh-contents))
 
 (defvar my-packages
-  '(;; for editing markdown
+  '(;; vi style features
+    evil
+
+    ;; for editing markdown
     markdown-mode
     
     ;; rust-lang major mode
@@ -71,6 +74,8 @@
     (package-install p)))
 
 ;; Customizations
+(require 'evil)
+(evil-mode 1)
 
 ;; Add customization directory
 (add-to-list 'load-path "~/.emacs.d/customizations")
