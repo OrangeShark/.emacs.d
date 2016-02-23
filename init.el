@@ -77,6 +77,9 @@
 (require 'evil)
 (evil-mode 1)
 
+;; add guix profile
+(add-to-list 'load-path "~/.guix-profile/share/emacs/site-lisp/")
+(require 'guix-init nil t)
 ;; Add customization directory
 (add-to-list 'load-path "~/.emacs.d/customizations")
 
@@ -114,7 +117,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" default))))
+ '(custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" default)))
+ '(safe-local-variable-values (quote ((eval modify-syntax-entry 43 "'") (eval modify-syntax-entry 36 "'") (eval modify-syntax-entry 126 "'") (bug-reference-bug-regexp . "<https?://\\(debbugs\\|bugs\\)\\.gnu\\.org/\\([0-9]+\\)>")))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
