@@ -1,127 +1,112 @@
-;; Packages
-(require 'package)
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-			 ("marmalade" . "http://marmalade-repo.org/packages/")
-			 ("melpa" . "http://melpa.milkbox.net/packages/")))
-(package-initialize)
-(setq url-http-attempt-keepalives nil)
 
-(when (not package-archive-contents)
-  (package-refresh-contents))
+(add-to-list 'load-path (concat user-emacs-directory "lisp/"))
+(require 'package-utils)
 
-(defvar my-packages
-  '(;; vi style features
-    evil
 
-    ;; for editing markdown
-    markdown-mode
-    
-    ;; rust-lang major mode
-    rust-mode
+(defun init ()
+  (init-ui)
+  (set-theme 'moe-theme 'moe-dark)
+  (init-evil-mode)
+  (init-editing)
+  (init-navigation)
+  (init-elisp)
+  (init-scheme))
 
-    ;; typescript
-    typescript-mode
 
-    ;; minor mode for editing S-expression data
-    paredit
+(defun init-ui ()
+  (when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+  (when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+  (require 'linum-off)
+  (global-linum-mode t)
+  (setq-default frame-title-format "%b (%f)"))
 
-    ;; key bindings for Clojure
-    clojure-mode
+(defun set-theme (theme style)
+  (install-package-if-needed theme)
+  (require theme)
+  (funcall style))
 
-    ;; extra syntax highlighting for clojure
-    clojure-mode-extra-font-locking
+(defun init-evil-mode ()
+  (install-package-if-needed 'evil)
+  (require 'evil)
+  (evil-mode 1))
 
-    ;; interation with Clojure REPL
-    cider
+(defun init-editing ()
+  (show-paren-mode 1)     ;; Highlights matching parenthesis
+  (global-hl-line-mode 1) ;; Highlight current line
+  (setq-default indent-tabs-mode nil)
+  (setq backup-directory-alist `(("." . ,(concat user-emacs-directory
+						"backups"))))
+  (setq auto-save-default nil))
 
-    ;; text completion
-    company
+(defun init-navigation ()
+  (install-package-if-needed 'projectile)
+  (install-package-if-needed 'bind-map)
+  (projectile-global-mode)
+  (require 'bind-map)
+  (bind-map my-navigation-map
+    :keys ("M-p")
+    :evil-keys ("SPC")
+    :evil-states (normal motion visual))
+  (bind-map-set-keys my-navigation-map
+    "p p" 'projectile-switch-project
+    "p f" 'projectile-find-file
+    "p d" 'projectile-find-dir
+    "p D" 'projectile-dired))
 
-    ;; The Superior Lisp Interaction Mode for Emacs
-    slime
-    slime-company
+(defun init-elisp ()
+  (install-package-if-needed 'bind-map)
+  (install-package-if-needed 'paredit)
+  (install-package-if-needed 'evil-paredit)
+  (install-package-if-needed 'rainbow-delimiters)
+  (require 'bind-map)
+  (bind-map my-elisp-map
+    :keys ("M-m")
+    :evil-keys ("SPC m")
+    :evil-states (normal motion visual)
+    :major-modes (emacs-lisp-mode lisp-interaction-mode))
+  (bind-map-set-keys my-elisp-map
+    "c c" 'emacs-lisp-byte-compile
+    ;; Eval
+    "e b" 'eval-buffer
+    "e d" 'eval-defun
+    "e r" 'eval-region
+    "e e" 'eval-last-sexp)
+  (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook 'evil-paredit-mode)
+  (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'emacs-lisp-mode-hook 'turn-on-eldoc-mode))
 
-    ;; scheme
-    geiser
+(defun init-scheme ()
+  (install-package-if-needed 'bind-map)
+  (require 'bind-map)
+  (bind-map my-scheme-map
+    :keys ("M-m")
+    :evil-keys ("SPC m")
+    :evil-states (normal motion visual)
+    :major-modes (scheme-mode))
+  (install-package-if-needed 'geiser)
+  (install-package-if-needed 'paredit)
+  (install-package-if-needed 'evil-paredit)
+  (install-package-if-needed 'rainbow-delimiters)
+  (add-hook 'scheme-mode-hook #'paredit-mode)
+  (add-hook 'scheme-mode-hook 'evil-paredit-mode)
+  (add-hook 'scheme-mode-hook #'rainbow-delimiters-mode)
+  (bind-map-set-keys my-scheme-map
+    "c c" 'geiser-compile-current-buffer
+    "c p" 'geiser-add-to-load-path
+    ;; Eval
+    "e b" 'geiser-eval-buffer
+    "e d" 'geiser-eval-definition
+    "e r" 'geiser-eval-region
+    "e e" 'geiser-eval-last-sexp
+    ;; Documentation
+    "h h" 'geiser-doc-symbol-at-point
+    "h d" 'geiser-doc-look-up-manual
+    "h m" 'geiser-doc-module
+    ;; Navigation
+    "g g" 'geiser-edit-symbol-at-point
+    "g b" 'geiser-pop-symbol-stack
+    "g m" 'geiser-edit-module))
 
-    ;; ido
-    ido-ubiquitous
-    
-    ;; Enhances M-x
-    smex
-    
-    ;; project navigation
-    projectile
-    
-    ;; rainbow parenthesis
-    rainbow-delimiters
-
-    ;; edit html like sexps
-    tagedit
-
-    ;; git integration
-    ;magit
-
-    ;; theme
-    moe-theme
-
-    ;; org-mode
-    org))
-
-;; Install package if not already installed
-(dolist (p my-packages)
-  (when (not (package-installed-p p))
-    (package-install p)))
-
-;; Customizations
-(require 'evil)
-(evil-mode 1)
-
-;; add guix profile
-(add-to-list 'load-path "~/.guix-profile/share/emacs/site-lisp/")
-(require 'guix-init nil t)
-;; Add customization directory
-(add-to-list 'load-path "~/.emacs.d/customizations")
-
-(load "navigation.el")
-
-;; Changes to the user interface
-(load "ui.el")
-
-;; Make editing easier
-(load "editing.el")
-
-;; Theme
-(load "themes.el")
-
-;; misc config
-(load "misc.el")
-
-;; git config
-;(load "git.el")
-
-;; For editing elisp
-(load "elisp-editing.el")
-
-;; Language specific
-(load "setup-haskell.el")
-(load "setup-scheme.el")
-(load "setup-markdown.el")
-(load "setup-javascript.el")
-(load "setup-clojure.el")
-(load "setup-lisp.el")
-(load "setup-org.el")
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "9dae95cdbed1505d45322ef8b5aa90ccb6cb59e0ff26fef0b8f411dfc416c552" default)))
- '(safe-local-variable-values (quote ((eval modify-syntax-entry 43 "'") (eval modify-syntax-entry 36 "'") (eval modify-syntax-entry 126 "'") (bug-reference-bug-regexp . "<https?://\\(debbugs\\|bugs\\)\\.gnu\\.org/\\([0-9]+\\)>")))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(init)
