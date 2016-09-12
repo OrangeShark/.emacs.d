@@ -29,7 +29,13 @@
 (defun init-evil-mode ()
   (install-package-if-needed 'evil)
   (require 'evil)
-  (evil-mode 1))
+  (evil-mode 1)
+  (require 'bind-map)
+  (bind-map evil-map
+    :evil-keys ("SPC")
+    :evil-states (normal motion visual))
+  (bind-map-set-keys evil-map
+    ":" 'execute-extended-command))
 
 (defun init-editing ()
   (show-paren-mode 1)     ;; Highlights matching parenthesis
@@ -44,15 +50,15 @@
   (install-package-if-needed 'bind-map)
   (projectile-global-mode)
   (require 'bind-map)
-  (bind-map my-navigation-map
+  (bind-map evil-navigation-map
     :keys ("M-p")
-    :evil-keys ("SPC")
+    :evil-keys ("SPC p")
     :evil-states (normal motion visual))
-  (bind-map-set-keys my-navigation-map
-    "p p" 'projectile-switch-project
-    "p f" 'projectile-find-file
-    "p d" 'projectile-find-dir
-    "p D" 'projectile-dired))
+  (bind-map-set-keys evil-navigation-map
+    "p" 'projectile-switch-project
+    "f" 'projectile-find-file
+    "d" 'projectile-find-dir
+    "D" 'projectile-dired))
 
 (defun init-elisp ()
   (install-package-if-needed 'bind-map)
