@@ -1,4 +1,3 @@
-
 (add-to-list 'load-path (concat user-emacs-directory "lisp/"))
 (require 'package-utils)
 
@@ -9,6 +8,7 @@
   (init-evil-mode)
   (init-editing)
   (init-navigation)
+  (init-org)
   (init-elisp)
   (init-scheme))
 
@@ -109,4 +109,36 @@
     "g b" 'geiser-pop-symbol-stack
     "g m" 'geiser-edit-module))
 
+
+(defun init-org ()
+  (install-package-if-needed 'bind-map)
+  (require 'org)
+  (bind-map evil-org-map
+    :keys ("M-o")
+    :evil-keys ("SPC o")
+    :evil-states (normal motion visual))
+  (require 'org)
+  (bind-map-set-keys evil-org-map
+    "a" 'org-agenda
+    "l" 'org-store-link)
+  (setq org-log-done t)
+  (setq org-agenda-files '("~/org")))
+
 (init)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values
+   (quote
+    ((eval modify-syntax-entry 43 "'")
+     (eval modify-syntax-entry 36 "'")
+     (eval modify-syntax-entry 126 "'")
+     (bug-reference-bug-regexp . "<https?://\\(debbugs\\|bugs\\)\\.gnu\\.org/\\([0-9]+\\)>")))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
