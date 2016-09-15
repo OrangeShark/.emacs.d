@@ -123,7 +123,6 @@
     :keys ("M-o")
     :evil-keys ("SPC o")
     :evil-states (normal motion visual))
-  (require 'org)
   (bind-map-set-keys evil-org-map
     "a" 'org-agenda
     "l" 'org-store-link)
@@ -131,6 +130,11 @@
   (setq org-agenda-files '("~/org")))
 
 (init)
+
+(require 'server)
+
+(server-start)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
