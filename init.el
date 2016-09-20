@@ -10,7 +10,8 @@
   (init-navigation)
   (init-org)
   (init-elisp)
-  (init-scheme))
+  (init-scheme)
+  (init-git))
 
 
 (defun init-ui ()
@@ -98,9 +99,12 @@
   (add-hook 'scheme-mode-hook #'paredit-mode)
   (add-hook 'scheme-mode-hook 'evil-paredit-mode)
   (add-hook 'scheme-mode-hook #'rainbow-delimiters-mode)
+  (setq geiser-default-implementation 'guile)
   (bind-map-set-keys my-scheme-map
     "c c" 'geiser-compile-current-buffer
     "c p" 'geiser-add-to-load-path
+    ;; start geiser
+    "r g" 'run-guile
     ;; Eval
     "e b" 'geiser-eval-buffer
     "e d" 'geiser-eval-definition
@@ -127,7 +131,20 @@
     "a" 'org-agenda
     "l" 'org-store-link)
   (setq org-log-done t)
-  (setq org-agenda-files '("~/org")))
+  (setq org-agenda-files '("~/org"))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (dot . t)
+     (scheme . t))))
+
+(defun init-git ()
+  (bind-map evil-git-map
+    :keys ("M-g")
+    :evil-keys ("SPC g")
+    :evil-states (normal motion visual))
+  (bind-map-set-keys evil-git-map
+    "s" 'magit-status))
 
 (init)
 
@@ -140,6 +157,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#303030" "#ff4b4b" "#d7ff5f" "#fce94f" "#5fafd7" "#d18aff" "#afd7ff" "#c6c6c6"])
+ '(custom-safe-themes
+   (quote
+    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(safe-local-variable-values
    (quote
     ((eval modify-syntax-entry 43 "'")
