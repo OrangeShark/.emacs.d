@@ -149,8 +149,8 @@
 (init)
 
 (require 'server)
-
-(server-start)
+(unless (server-running-p)
+  (server-start))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
