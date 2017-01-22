@@ -42,6 +42,9 @@
  '(custom-safe-themes
    (quote
     ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
+ '(package-selected-packages
+   (quote
+    (weechat solarized-theme rainbow-delimiters projectile moe-theme magit geiser evil-paredit bind-map)))
  '(safe-local-variable-values
    (quote
     ((eval progn

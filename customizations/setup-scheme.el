@@ -13,7 +13,7 @@
 (add-hook 'scheme-mode-hook #'paredit-mode)
 (add-hook 'scheme-mode-hook 'evil-paredit-mode)
 (add-hook 'scheme-mode-hook #'rainbow-delimiters-mode)
-(setq geiser-default-implementation 'guile)
+(setq geiser-active-implementations '(guile))
 (bind-map-set-keys my-scheme-map
   "c c" 'geiser-compile-current-buffer
   "c p" 'geiser-add-to-load-path

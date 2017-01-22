@@ -31,3 +31,29 @@
   "f" 'projectile-find-file
   "d" 'projectile-find-dir
   "D" 'projectile-dired)
+
+(bind-map evil-help-map
+  :evil-keys ("SPC h")
+  :evil-states (normal motion visual))
+(bind-map-set-keys evil-help-map
+  "d k" 'describe-key
+  "d f" 'describe-function
+  "d v" 'describe-variable
+  "d d" 'apropos-documentation
+  "d m" 'describe-mode)
+
+(bind-map evil-navigation-map
+  :evil-keys ("SPC w")
+  :evil-states (normal motion visual))
+(bind-map-set-keys evil-navigation-map
+  "v" 'split-window-right
+  "s" 'split-window-below
+  "h" 'evil-window-left
+  "j" 'evil-window-down
+  "k" 'evil-window-up
+  "l" 'evil-window-right
+  "F" 'make-frame
+  "o" 'other-frame
+  "w" 'other-window
+  "1" 'delete-other-windows
+  "0" 'delete-window)
