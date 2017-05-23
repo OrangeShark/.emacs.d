@@ -6,9 +6,6 @@
 (require 'package-utils)
 
 
-(defun init ()
-  (init-git))
-
 (load "ui.el")
 (load "editing.el")
 
@@ -18,15 +15,17 @@
 
 (load "setup-org.el")
 
-(defun init-git ()
-  (bind-map evil-git-map
-    :keys ("M-g")
-    :evil-keys ("SPC g")
-    :evil-states (normal motion visual))
-  (bind-map-set-keys evil-git-map
-    "s" 'magit-status))
+(load "setup-email.el")
 
-(init)
+(bind-map evil-global-map
+  :keys ("M-g")
+  :evil-keys ("SPC g")
+  :evil-states (normal motion visual))
+(bind-map-set-keys evil-global-map
+  "s" 'magit-status
+  ;; guix commands
+  "g" 'guix
+  "i" 'guix-installed-packages)
 
 (require 'server)
 (unless (server-running-p)
@@ -44,10 +43,19 @@
     ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
  '(package-selected-packages
    (quote
-    (weechat solarized-theme rainbow-delimiters projectile moe-theme magit geiser evil-paredit bind-map)))
+    (cider clojure-mode-extra-font-locking clojure-mode weechat solarized-theme rainbow-delimiters projectile moe-theme magit geiser evil-paredit bind-map)))
  '(safe-local-variable-values
    (quote
     ((eval progn
+           (put
+            (quote with-directory)
+            (quote scheme-indent-function)
+            1)
+           (put
+            (quote with-repository)
+            (quote scheme-indent-function)
+            2))
+     (eval progn
            (put
             (quote with-directory)
             (quote scheme-indent-function)

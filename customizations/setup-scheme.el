@@ -32,3 +32,11 @@
   "g g" 'geiser-edit-symbol-at-point
   "g b" 'geiser-pop-symbol-stack
   "g m" 'geiser-edit-module)
+
+
+(defun add-scheme-pretty-symbols ()
+  "words for prettify-symbols-mode"
+  (setq prettify-symbols-alist
+        '(("lambda" . 955))))
+
+(add-hook 'scheme-mode-hook 'add-scheme-pretty-symbols)

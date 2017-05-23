@@ -7,7 +7,8 @@
   :evil-keys ("SPC")
   :evil-states (normal motion visual))
 (bind-map-set-keys evil-map
-  ":" 'execute-extended-command)
+  ":" 'execute-extended-command
+  "SPC" 'execute-extended-command)
 
 (show-paren-mode 1)     ;; Highlights matching parenthesis
 
@@ -40,12 +41,14 @@
   "d f" 'describe-function
   "d v" 'describe-variable
   "d d" 'apropos-documentation
-  "d m" 'describe-mode)
+  "d m" 'describe-mode
+  "i i" 'info
+  "i a" 'info-apropos)
 
-(bind-map evil-navigation-map
+(bind-map evil-window-map
   :evil-keys ("SPC w")
   :evil-states (normal motion visual))
-(bind-map-set-keys evil-navigation-map
+(bind-map-set-keys evil-window-map
   "v" 'split-window-right
   "s" 'split-window-below
   "h" 'evil-window-left
@@ -55,5 +58,28 @@
   "F" 'make-frame
   "o" 'other-frame
   "w" 'other-window
+  "W" 'other-frame
   "1" 'delete-other-windows
-  "0" 'delete-window)
+  "0" 'delete-window
+  "d" 'delete-window
+  "D" 'delete-other-windows
+  "c" 'delete-frame
+  "C" 'delete-other-frames)
+
+(bind-map evil-buffer-map
+  :evil-keys ("SPC b")
+  :evil-states (normal motion visual))
+(bind-map-set-keys evil-buffer-map
+  "b" 'switch-to-buffer
+  "d" 'kill-buffer)
+
+(bind-map evil-global-file-map
+  :evil-keys ("SPC f")
+  :evil-states (normal motion visual))
+(bind-map-set-keys evil-global-file-map
+  "f" 'find-file
+  "s" 'save-buffer
+  "r" 'revert-buffer)
+
+(require 'ido)
+(ido-mode t)
