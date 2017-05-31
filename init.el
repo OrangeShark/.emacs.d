@@ -22,7 +22,11 @@
   :evil-keys ("SPC g")
   :evil-states (normal motion visual))
 (bind-map-set-keys evil-global-map
+  ;; magit commands
   "s" 'magit-status
+  "b b" 'magit-blame
+  "b q" 'magit-blame-quit
+  "b c" 'magit-show-commit
   ;; guix commands
   "g" 'guix
   "i" 'guix-installed-packages)
