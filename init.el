@@ -1,80 +1,130 @@
 
+;; Set customizations in another file instead of the init file.
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
+
+;; Add MELPA repository for more packages
+(require 'package)
+(add-to-list 'package-archives
+	     '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
-(add-to-list 'load-path (concat user-emacs-directory "lisp/"))
-(add-to-list 'load-path (concat user-emacs-directory "customizations/"))
-(require 'package-utils)
+;; Remove menu, tool, and scroll bars
+(when (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(when (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+
+(require 'moe-theme)
+(load-theme 'moe-dark t)
+
+;; General editing
+(show-paren-mode 1) ;; hi-light matching parens
+(setq-default indent-tabs-mode nil) ;; don't insert tabs
+(setq auto-save-default nil
+      backup-directory-alist `(("." . ,(expand-file-name "backups"
+                                                         user-emacs-directory))))
+
+(require 'ido)
+(ido-mode t)
+
+(require 'evil)
+(evil-mode 1)
+
+(projectile-mode)
+
+(require 'org)
+(setq org-board-capture-file "~/Wiki/links.org")
+(setq org-agenda-files '("~/org")
+      org-default-notes-file "~/org/refile.org"
+      org-capture-templates
+      `(("l" "capture link for org-archive" entry
+         (file+headline ,org-board-capture-file "Unsorted")
+         "* %?\n:PROPERTIES:\n:URL: %x\n:WGET_OPTIONS: -k\n:END:\n\n Added %U")))
+
+(defun do-org-board-dl-hook ()
+  (when (equal (buffer-name)
+               (concat "CAPTURE-" (file-name-nondirectory org-board-capture-file)))
+    (org-board-archive)))
+(add-hook 'org-capture-before-finalize-hook #'do-org-board-dl-hook)
+
+(bind-map org-leader-map
+  :evil-keys ("SPC m")
+  :major-modes (org-mode)
+  :bindings
+  ("t" #'org-todo
+   "r" #'org-refile
+   "c" #'org-ctrl-c-ctrl-c
+   "bo" #'org-board-open
+   "il" #'org-insert-link
+   "RET" #'org-open-at-point))
+
+(require 'bind-map)
+
+(bind-map base-leader-map
+  :evil-keys ("SPC")
+  :bindings
+  ("SPC" #'execute-extended-command
+   ;; file commands 
+   "ff" #'find-file
+   "fs" #'save-buffer
+   "fr" #'revert-buffer
+   ;; buffer commands
+   "bb" #'switch-to-buffer
+   "bk" #'kill-buffer
+   ;; help commands 
+   "hk" #'describe-key
+   "hf" #'describe-function
+   "hv" #'describe-variable
+   "hP" #'describe-package
+   "hm" #'describe-mode
+   ;; info commands
+   "ii" #'info
+   "ia" #'info-apropos
+   ;; project commands
+   "pf" #'projectile-find-file
+   "pp" #'projectile-switch-project
+   "pd" #'projectile-find-dir
+   "pD" #'projectile-dired
+   "pl" #'projectile-find-file-in-directory
+   "pb" #'projectile-switch-to-buffer
+   "pE" #'projectile-edit-dir-locals
+   ;; org commands
+   "oa" #'org-agenda
+   "ol" #'org-store-link
+   "oc" #'org-capture
+   ;; magit commands
+   "gs" #'magit-status))
 
 
-(load "ui.el")
-(load "editing.el")
+;; emacs lisp configurations
+(bind-map emacs-lisp-leader-map
+  :evil-keys ("SPC m")
+  :major-modes (emacs-lisp-mode lisp-interactive-mode)
+  :bindings
+  ("c c" 'emacs-lisp-byte-compile
+   ;; Eval
+   "e b" 'eval-buffer
+   "e d" 'eval-defun
+   "e r" 'eval-region
+   "e e" 'eval-last-sexp))
 
-(load "setup-elisp.el")
+(require 'adjust-parens)
+(require 'smartparens-config)
+(add-hook 'emacs-lisp-mode-hook #'adjust-parens-mode)
+(add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
+(add-hook 'emacs-lisp-mode-hook #'smartparens-strict-mode)
+(add-hook 'emacs-lisp-mode-hook #'evil-smartparens-mode)
 
-(load "setup-scheme.el")
 
-(load "setup-org.el")
+;; Scheme configuration
+(add-hook 'scheme-mode-hook #'adjust-parens-mode)
+(add-hook 'scheme-mode-hook #'smartparens-mode)
+(add-hook 'scheme-mode-hook #'smartparens-strict-mode)
+(add-hook 'scheme-mode-hook #'evil-smartparens-mode)
 
-(load "setup-email.el")
-
-(bind-map evil-global-map
-  :keys ("M-g")
-  :evil-keys ("SPC g")
-  :evil-states (normal motion visual))
-(bind-map-set-keys evil-global-map
-  ;; magit commands
-  "s" 'magit-status
-  "b b" 'magit-blame
-  "b q" 'magit-blame-quit
-  "b c" 'magit-show-commit
-  ;; guix commands
-  "g" 'guix
-  "i" 'guix-installed-packages)
-
+;; Start emacs edit server only if it not running
 (require 'server)
 (unless (server-running-p)
   (server-start))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#303030" "#ff4b4b" "#d7ff5f" "#fce94f" "#5fafd7" "#d18aff" "#afd7ff" "#c6c6c6"])
- '(custom-safe-themes
-   (quote
-    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default)))
- '(package-selected-packages
-   (quote
-    (cider clojure-mode-extra-font-locking clojure-mode weechat solarized-theme rainbow-delimiters projectile moe-theme magit geiser evil-paredit bind-map)))
- '(safe-local-variable-values
-   (quote
-    ((eval progn
-           (put
-            (quote with-directory)
-            (quote scheme-indent-function)
-            1)
-           (put
-            (quote with-repository)
-            (quote scheme-indent-function)
-            2))
-     (eval progn
-           (put
-            (quote with-directory)
-            (quote scheme-indent-function)
-            1)
-           (put
-            (quote with-repository)
-            (quote scheme-indent-function)
-            1))
-     (eval modify-syntax-entry 43 "'")
-     (eval modify-syntax-entry 36 "'")
-     (eval modify-syntax-entry 126 "'")
-     (bug-reference-bug-regexp . "<https?://\\(debbugs\\|bugs\\)\\.gnu\\.org/\\([0-9]+\\)>")))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(require 'org-protocol)

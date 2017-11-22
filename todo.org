@@ -1,0 +1,19 @@
+* General Emacs use
+** DONE custom file to not liter init file
+** DONE package management
+** DONE emacs server
+** DONE remove menu and tool bar
+** DONE project management with projectile
+** DONE ido completion
+** TODO email with mu4e
+* Emacs Lisp
+** DONE setup adjust-parens
+* Scheme
+** DONE setup adjust-parens
+** TODO setup geiser
+* Standard ML
+** TODO setup sml-mode
+* Git
+** DONE setup magit
+* Org Mode
+** DONE setup basic Org Mode
