@@ -27,9 +27,6 @@
 (require 'ido)
 (ido-mode t)
 
-(require 'evil)
-(evil-mode 1)
-
 (projectile-mode)
 
 (require 'org)
@@ -47,80 +44,24 @@
     (org-board-archive)))
 (add-hook 'org-capture-before-finalize-hook #'do-org-board-dl-hook)
 
-(bind-map org-leader-map
-  :evil-keys ("SPC m")
-  :major-modes (org-mode)
-  :bindings
-  ("t" #'org-todo
-   "r" #'org-refile
-   "c" #'org-ctrl-c-ctrl-c
-   "bo" #'org-board-open
-   "il" #'org-insert-link
-   "RET" #'org-open-at-point))
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c c") #'org-capture)
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c b") #'org-iswitchb)
 
-(require 'bind-map)
-
-(bind-map base-leader-map
-  :evil-keys ("SPC")
-  :bindings
-  ("SPC" #'execute-extended-command
-   ;; file commands 
-   "ff" #'find-file
-   "fs" #'save-buffer
-   "fr" #'revert-buffer
-   ;; buffer commands
-   "bb" #'switch-to-buffer
-   "bk" #'kill-buffer
-   ;; help commands 
-   "hk" #'describe-key
-   "hf" #'describe-function
-   "hv" #'describe-variable
-   "hP" #'describe-package
-   "hm" #'describe-mode
-   ;; info commands
-   "ii" #'info
-   "ia" #'info-apropos
-   ;; project commands
-   "pf" #'projectile-find-file
-   "pp" #'projectile-switch-project
-   "pd" #'projectile-find-dir
-   "pD" #'projectile-dired
-   "pl" #'projectile-find-file-in-directory
-   "pb" #'projectile-switch-to-buffer
-   "pE" #'projectile-edit-dir-locals
-   ;; org commands
-   "oa" #'org-agenda
-   "ol" #'org-store-link
-   "oc" #'org-capture
-   ;; magit commands
-   "gs" #'magit-status))
-
-
-;; emacs lisp configurations
-(bind-map emacs-lisp-leader-map
-  :evil-keys ("SPC m")
-  :major-modes (emacs-lisp-mode lisp-interactive-mode)
-  :bindings
-  ("c c" 'emacs-lisp-byte-compile
-   ;; Eval
-   "e b" 'eval-buffer
-   "e d" 'eval-defun
-   "e r" 'eval-region
-   "e e" 'eval-last-sexp))
 
 (require 'adjust-parens)
 (require 'smartparens-config)
 (add-hook 'emacs-lisp-mode-hook #'adjust-parens-mode)
 (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
 (add-hook 'emacs-lisp-mode-hook #'smartparens-strict-mode)
-(add-hook 'emacs-lisp-mode-hook #'evil-smartparens-mode)
 
 
 ;; Scheme configuration
 (add-hook 'scheme-mode-hook #'adjust-parens-mode)
 (add-hook 'scheme-mode-hook #'smartparens-mode)
 (add-hook 'scheme-mode-hook #'smartparens-strict-mode)
-(add-hook 'scheme-mode-hook #'evil-smartparens-mode)
+
 
 ;; Start emacs edit server only if it not running
 (require 'server)
