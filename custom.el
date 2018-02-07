@@ -15,7 +15,7 @@
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(package-selected-packages
    (quote
-    (org-board markdown-mode projectile bind-map evil evil-smartparens moe-theme smartparens geiser magit adjust-parens)))
+    (sml-mode org-board markdown-mode projectile bind-map evil evil-smartparens moe-theme smartparens geiser magit adjust-parens)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(safe-local-variable-values
    (quote
