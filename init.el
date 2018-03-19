@@ -57,6 +57,14 @@
 ;; Scheme configuration
 (add-hook 'scheme-mode-hook #'adjust-parens-mode)
 
+(projectile-register-project-type
+ 'guile '("guile.am")
+ :configure "./configure"
+ :compile "make"
+ :test "make check")
+
+(load (expand-file-name "email.el" user-emacs-directory))
+
 
 ;; Start emacs edit server only if it not running
 (require 'server)

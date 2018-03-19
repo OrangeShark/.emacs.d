@@ -5,7 +5,7 @@
 ** DONE remove menu and tool bar
 ** DONE project management with projectile
 ** DONE ido completion
-** TODO email with mu4e
+** DONE email with mu4e
 * Emacs Lisp
 ** DONE setup adjust-parens
 * Scheme

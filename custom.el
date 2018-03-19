@@ -13,6 +13,9 @@
  '(nrepl-message-colors
    (quote
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
+ '(org-agenda-files
+   (quote
+    ("~/.emacs.d/todo.org" "/home/erik/org/game.org" "/home/erik/org/jobs.org" "/home/erik/org/recipes.org" "/home/erik/org/refile.org" "/home/erik/org/todo.org")))
  '(package-selected-packages
    (quote
     (sml-mode org-board markdown-mode projectile bind-map evil evil-smartparens moe-theme smartparens geiser magit adjust-parens)))
